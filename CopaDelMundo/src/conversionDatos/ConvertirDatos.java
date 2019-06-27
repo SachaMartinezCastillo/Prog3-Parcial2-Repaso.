@@ -67,4 +67,59 @@ public class ConvertirDatos
 	{
 		return objeto;
 	}
+
+
+	public Federacion JSONobjectAjava()
+	{
+		Federacion fed = null;
+		
+		try {
+				String nombreFed = objeto.getString("Nombre");
+				String fecha = objeto.getString("Fecha");
+				int copas = objeto.getInt("Cant Copas");
+				JSONObject objArreglo = objeto.getJSONObject("Integrantes");
+				JSONArray arregloFut = objArreglo.getJSONArray("fut");
+				JSONArray arregloEnt = objArreglo.getJSONArray("entrenador");
+
+				fed = new Federacion(nombreFed, fecha, copas);
+
+				
+				for (int i = 0; i < arregloFut.length(); i++) 
+				{
+					JSONObject aux = arregloFut.getJSONObject(i);
+					
+					String nombre = aux.getString("nombre");
+					String apellido = aux.getString("apellido");
+					int edad = aux.getInt("edad");
+					int casaca = aux.getInt("numero casaca");
+					String puesto = aux.getString("puesto");
+					
+					Futbolista jugador = new Futbolista(nombre, apellido, edad, casaca, puesto);
+					fed.agregarFutbolista(jugador);
+				}
+				
+				for (int j = 0; j < arregloEnt.length(); j++) 
+				{
+					JSONObject entrenador = arregloEnt.getJSONObject(j);
+					String nombreE = entrenador.getString("nombre");
+					String apellidoE = entrenador.getString("apellido");
+					int edadE = entrenador.getInt("edad");
+					String sistema = entrenador.getString("sist. de juego");
+					String estilo = entrenador.getString("estilo");
+					
+					Entrenador dt = new Entrenador(nombreE, apellidoE, edadE, sistema, estilo);
+					fed.agregarEntrenador(dt);
+				}	
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		
+		return fed;
+	}
+
+
+
+
+
 }
